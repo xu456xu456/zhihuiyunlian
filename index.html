@@ -19,11 +19,24 @@
     margin: 10% auto;
     padding: 0 20px;
   }
-  img {
+  .slideshow {
+    position: relative;
     width: 100%;
     max-width: 480px;
+    margin: 0 auto 20px auto;
+  }
+  .slideshow img {
+    width: 100%;
     border-radius: 6px;
     box-shadow: 0 4px 12px rgba(0,0,0,.05);
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+  }
+  .slideshow img.active {
+    opacity: 1;
   }
   h1 {
     font-size: 28px;
@@ -58,8 +71,13 @@
 </head>
 <body>
   <div class="wrapper">
-    <!-- 🏺 图片来自 Unsplash，无版权风险 -->
-    <img src="https://images.unsplash.com/photo-1607082349564-2b9b6bbff8f6?auto=format&fit=crop&w=900&q=80" alt="white ceramic bowl on wooden table">
+    <!-- 🏺 本地三图自动轮播 -->
+    <div class="slideshow">
+      <img src="pottery-8026823_1280.jpg" class="active" alt="陶艺作品1">
+      <img src="clay-pot-8029276_960_720.jpg" alt="陶艺作品2">
+      <img src="jugs-357861_960_720.jpg" alt="陶艺作品3">
+    </div>
+
     <h1>制绘云莲 Zhihuiyunlian</h1>
     <h2>Handcrafted · Ceramic · Aesthetic</h2>
     <div class="divider"></div>
@@ -68,7 +86,19 @@
        <strong>更多内容将陆续上传。</strong></p>
     <p><em>This page is for display and contact purposes only.</em></p>
     <p>若您对本域名或项目感兴趣，欢迎来信交流：</p>
-    <p><strong>✉️ yourname@gmail.com</strong></p>
+    <p><strong>✉️ <a href="mailto:xu456xu@gmail.com">xu456xu@gmail.com</a></strong></p>
   </div>
+
+<script>
+// 自动轮播脚本
+let current = 0;
+const slides = document.querySelectorAll('.slideshow img');
+setInterval(() => {
+  slides[current].classList.remove('active');
+  current = (current + 1) % slides.length;
+  slides[current].classList.add('active');
+}, 6000);
+</script>
+
 </body>
 </html>
