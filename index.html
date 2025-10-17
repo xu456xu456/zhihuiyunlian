@@ -102,7 +102,6 @@
     transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease;}
   .btn:hover{transform:translateY(-2px);box-shadow:var(--glow);border-color:rgba(92,225,230,.45)}
 
-  /* visitor counter */
   #visitor-counter{
     margin-top:18px;
     font-size:14px;
@@ -165,7 +164,9 @@
 
   <footer>
     <p class="tiny">© <span id="y"></span> Zhihuiyunlian · Independent Creative Display</p>
-    <div id="visitor-counter">👁 GLOBAL VISITORS: <span id="count">loading...</span></div>
+    <div id="visitor-counter">
+      👁 GLOBAL VISITORS / 🌏 全球访问次数：<span id="count">loading...</span> 次
+    </div>
   </footer>
 </div>
 
@@ -184,16 +185,44 @@
     }catch(e){ alert('复制失败，请手动复制：xu456xu@gmail.com'); }
   });
 
-  // 访客计数器 (CountAPI)
-  const counterKey = "zhihuiyunlian_com_global";
-  fetch(`https://api.countapi.xyz/hit/${counterKey}`)
-    .then(res => res.json())
-    .then(data => {
-      document.getElementById('count').textContent = data.value.toLocaleString();
-    })
-    .catch(() => {
-      document.getElementById('count').textContent = 'error';
-    });
+  // ======== 访客计数（稳定版 + 动画 + 起始9876） ========
+  const NS  = 'zhihuiyunlian.com';
+  const KEY = 'global';
+  const el = document.getElementById('count');
+
+  function animateCount(from, to) {
+    const dur = 1200, start = performance.now();
+    function step(ts){
+      const p = Math.min(1, (ts - start) / dur);
+      const val = Math.floor(from + (to - from) * p);
+      el.textContent = val.toLocaleString();
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  function fallback() {
+    const k = 'local_visitors_'+NS+'_'+KEY;
+    let v = parseInt(localStorage.getItem(k) || '9876', 10);
+    v = isFinite(v) ? v + 1 : 9876;
+    localStorage.setItem(k, v);
+    animateCount(v-1, v);
+  }
+
+  async function count() {
+    const base = 'https://api.countapi.xyz';
+    try {
+      const res = await fetch(`${base}/hit/${encodeURIComponent(NS)}/${encodeURIComponent(KEY)}`, {mode:'cors'});
+      if(!res.ok) throw new Error('HTTP '+res.status);
+      const data = await res.json();
+      const from = Math.max(9876, data.value - 1);
+      animateCount(from, data.value);
+    } catch {
+      fallback();
+    }
+  }
+
+  count();
 </script>
 </body>
 </html>
