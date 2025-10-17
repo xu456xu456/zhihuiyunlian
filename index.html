@@ -1,109 +1,229 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex,nofollow">
-<title>制绘云莲 · Zhihuiyunlian</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex,nofollow" />
+<meta name="theme-color" content="#0b0f1a" />
+<title>智慧云联 · Zhihuiyunlian</title>
 <style>
-  body {
-    margin: 0;
-    padding: 0;
-    background: #f7f4f0;
-    font-family: "PingFang SC","Hiragino Sans GB","Noto Sans",sans-serif;
-    color: #3a3a3a;
-    text-align: center;
+  :root{
+    --bg:#0b0f1a;
+    --panel:#101726;
+    --text:#d7e2ff;
+    --muted:#7b8ab9;
+    --accent:#5ce1e6;
+    --accent-2:#9b8cff;
+    --glow: 0 0 30px rgba(92,225,230,.25), 0 0 60px rgba(155,140,255,.15);
+    --radius:18px;
   }
-  .wrapper {
-    max-width: 600px;
-    margin: 8% auto;
-    padding: 0 20px;
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Noto Sans",Segoe UI,Roboto,Ubuntu,Arial,sans-serif;
+    color:var(--text);
+    background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(155,140,255,.10), transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, rgba(92,225,230,.12), transparent 60%),
+      linear-gradient(180deg, #0b0f1a 0%, #0b0f1a 100%);
+    overflow-x:hidden;
   }
-  /* 让轮播图占有固定高度，避免覆盖文字 */
-  .slideshow {
-    position: relative;
-    width: 100%;
-    max-width: 480px;
-    height: 320px; /* ✅ 固定一个高度 */
-    margin: 0 auto 40px auto;
-    overflow: hidden;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,.08);
+
+  /* subtle animated grid */
+  .grid{
+    position:fixed; inset:0; pointer-events:none; opacity:.35; mix-blend-mode:screen;
+    background-image: linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+    background-size: 32px 32px, 32px 32px;
+    animation: drift 24s linear infinite;
   }
-  .slideshow img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* ✅ 保持比例裁剪 */
-    position: absolute;
-    left: 0;
-    top: 0;
-    opacity: 0;
-    transition: opacity 2s ease-in-out;
+  @keyframes drift{ from{transform:translate3d(0,0,0)} to{transform:translate3d(-32px,-32px,0)} }
+
+  .wrap{
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 56px 20px 80px;
   }
-  .slideshow img.active {
-    opacity: 1;
+  header{
+    text-align:center;
+    margin: 46px 0 28px;
   }
-  h1 {
-    font-size: 28px;
-    letter-spacing: 1px;
-    color: #2f2f2f;
-    margin: 20px 0 6px 0;
+  .brand{
+    display:inline-block;
+    padding: 14px 20px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(92,225,230,.15), rgba(155,140,255,.15));
+    border: 1px solid rgba(140,160,255,.18);
+    box-shadow: var(--glow);
+    font-size: 12px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted);
   }
-  h2 {
-    font-size: 16px;
-    font-weight: 400;
-    color: #7b6b4c;
-    margin-top: 0;
+  h1{
+    margin: 14px 0 8px;
+    font-size: 40px; line-height:1.1; letter-spacing:.5px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    text-shadow: 0 0 18px rgba(92,225,230,.25);
+    animation: pulse 4s ease-in-out infinite;
   }
-  p {
-    line-height: 1.7;
-    font-size: 16px;
-    color: #555;
-    margin: 10px 0 20px 0;
+  @media (max-width:540px){ h1{font-size:32px} }
+
+  .subtitle{
+    margin:0 auto 18px; max-width:720px; color:var(--muted); font-size:16px;
   }
-  .divider {
-    width: 60px;
-    height: 1px;
-    background: #c9b99c;
-    margin: 16px auto;
+  .divider{
+    width: 86px; height: 2px; margin: 18px auto 0;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    border-radius: 2px;
   }
-  a {
-    color: #7b6b4c;
-    text-decoration: none;
-    font-weight: 500;
+  @keyframes pulse{
+    0%,100%{ text-shadow: 0 0 14px rgba(92,225,230,.18)}
+    50%    { text-shadow: 0 0 24px rgba(155,140,255,.28)}
   }
+
+  .panel{
+    background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+    border:1px solid rgba(140,160,255,.18);
+    border-radius: var(--radius);
+    box-shadow: var(--glow);
+    padding: 22px 22px;
+  }
+
+  .section{
+    display:grid; gap:16px; margin-top:22px;
+    grid-template-columns: 1fr 1fr;
+  }
+  @media (max-width:820px){ .section{grid-template-columns:1fr} }
+
+  .card{
+    padding:18px; border-radius:14px; position:relative; overflow:hidden;
+    background: rgba(10,16,30,.65);
+    border: 1px solid rgba(140,160,255,.15);
+  }
+  .card h3{
+    margin:2px 0 6px; font-size:18px;
+    color:#e6eeff;
+  }
+  .card p{ margin:0; color:var(--muted); line-height:1.7; font-size:14.5px }
+
+  /* 云端链接 */
+  .links{ display:grid; gap:12px; margin-top:12px }
+  .link{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:12px 14px; border-radius:12px; text-decoration:none;
+    border:1px solid rgba(140,160,255,.18);
+    background: rgba(15,22,40,.7);
+    color:var(--text);
+    transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+  }
+  .link:hover{ transform: translateY(-2px); box-shadow: var(--glow); border-color: rgba(92,225,230,.45) }
+  .link .l{
+    display:flex; gap:10px; align-items:center; font-weight:600;
+  }
+  .badge{
+    font-size:11px; padding:4px 8px; border-radius:999px;
+    color:#06101a; background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  }
+
+  footer{
+    margin-top:34px; text-align:center; color:var(--muted); font-size:12.5px
+  }
+
+  .tiny{ font-size:12px; color:#8fa0d2 }
+  .mono{ font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,"Cascadia Mono","PingFang SC",monospace }
+
+  /* 小交互按钮 */
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:10px 14px; border-radius:12px;
+    border:1px solid rgba(140,160,255,.2);
+    background: rgba(12,18,32,.7);
+    color:var(--text); text-decoration:none; font-weight:600;
+    transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+  }
+  .btn:hover{ transform: translateY(-2px); box-shadow: var(--glow); border-color: rgba(92,225,230,.45) }
 </style>
 </head>
 <body>
-  <div class="wrapper">
-    <!-- 🏺 图片路径指向 images 文件夹 -->
-    <div class="slideshow">
-      <img src="images/pottery-8026823_1280.jpg" class="active" alt="陶艺作品1">
-      <img src="images/clay-pot-8029276_960_720.jpg" alt="陶艺作品2">
-      <img src="images/jugs-357861_960_720.jpg" alt="陶艺作品3">
-    </div>
+<div class="grid" aria-hidden="true"></div>
 
-    <h1>制绘云莲 Zhihuiyunlian</h1>
-    <h2>Handcrafted · Ceramic · Aesthetic</h2>
+<div class="wrap">
+  <header>
+    <span class="brand">AI • Cloud • Intelligent • Studio</span>
+    <h1>智慧云联 <span class="mono">Zhihuiyunlian</span></h1>
+    <p class="subtitle">
+      聚焦 <strong>AI 赋能</strong> 与 <strong>云端连接</strong> 的轻量级创意实验。<br>
+      Minimal, Secure, Future-Ready.
+    </p>
     <div class="divider"></div>
-    <p>灵感源自泥与火的温度，形于手，成于心。<br>
-       我们相信器物有灵，手作之美能连接人与自然。<br>
-       <strong>更多内容将陆续上传。</strong></p>
-    <p><em>This page is for display and contact purposes only.</em></p>
-    <p>若您对本域名或项目感兴趣，欢迎来信交流：</p>
-    <p><strong>✉️ <a href="mailto:xu456xu@gmail.com">xu456xu@gmail.com</a></strong></p>
+  </header>
+
+  <!-- about / value -->
+  <div class="section">
+    <div class="card panel">
+      <h3>愿景 · Vision</h3>
+      <p>以「智慧」驱动体验，以「云联」连接价值：用更少的页面和更清晰的接口，完成更可靠的交付。</p>
+      <p class="tiny">Simple interface. Solid backend. Cloud-first.</p>
+    </div>
+    <div class="card panel">
+      <h3>声明 · Notice</h3>
+      <p>本页为<strong>独立创意展示与联系页</strong>，不隶属、未获任何名为「智慧云联 / Zhihuiyunlian」公司的关联或背书。</p>
+      <p class="tiny">Independent personal project · Not affiliated with any business entity.</p>
+    </div>
   </div>
 
-<script>
-// 自动轮播脚本
-let current = 0;
-const slides = document.querySelectorAll('.slideshow img');
-setInterval(() => {
-  slides[current].classList.remove('active');
-  current = (current + 1) % slides.length;
-  slides[current].classList.add('active');
-}, 6000);
-</script>
+  <!-- 云端链接 -->
+  <section class="panel" style="margin-top:22px;">
+    <h3 style="margin:4px 0 10px; color:#e6eeff;">云端链接 · Cloud Links</h3>
+    <div class="links">
+      <!-- 把 href 换成你的真实地址 -->
+      <a class="link" href="mailto:xu456xu@gmail.com" aria-label="Contact via Email">
+        <div class="l">✉️ <span>联系邮箱</span></div><span class="badge">Email</span>
+      </a>
+      <a class="link" href="https://dan.com/buy-domain/zhihuiyunlian.com" target="_blank" rel="noopener">
+        <div class="l">💳 <span>域名交易（Dan）</span></div><span class="badge">Escrow</span>
+      </a>
+      <a class="link" href="https://www.afternic.com/domain/zhihuiyunlian.com" target="_blank" rel="noopener">
+        <div class="l">🛒 <span>Afternic 列表</span></div><span class="badge">Listing</span>
+      </a>
+      <a class="link" href="https://github.com/yourname/zhihuiyunlian" target="_blank" rel="noopener">
+        <div class="l">🐙 <span>GitHub 仓库</span></div><span class="badge">Repo</span>
+      </a>
+      <a class="link" href="https://cloudflarepages.com" target="_blank" rel="noopener">
+        <div class="l">☁️ <span>Cloudflare Pages 部署</span></div><span class="badge">CDN</span>
+      </a>
+      <a class="link" href="https://www.22.cn/" target="_blank" rel="noopener">
+        <div class="l">🔧 <span>22.cn 域名管理</span></div><span class="badge">DNS</span>
+      </a>
+    </div>
 
-</body>
-</html>
+    <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
+      <a class="btn" href="mailto:xu456xu@gmail.com">立即联系</a>
+      <button class="btn" id="copyMail" type="button">复制邮箱</button>
+    </div>
+  </section>
+
+  <!-- brief intro -->
+  <section class="panel" style="margin-top:22px;">
+    <h3 style="margin:4px 0 10px; color:#e6eeff;">简介 · About</h3>
+    <p style="margin:0; color:var(--muted); line-height:1.75;">
+      我们探索将 <strong>AI 智能体</strong> 与 <strong>云端服务</strong> 融合到实际业务流程中：数据接入、轻服务编排、极简前端展示与可靠交付。
+      若你对该域名/概念有合作或收购意向，欢迎邮件沟通。
+    </p>
+  </section>
+
+  <footer>
+    <p class="tiny">© <span id="y"></span> Zhihuiyunlian · Independent Creative Display</p>
+  </footer>
+</div>
+
+<script>
+  // 年份 & 复制邮箱
+  document.getElementById('y').textContent = new Date().getFullYear();
+  document.getElementById('copyMail').addEventListener('click', async () => {
+    try{
+      await navigator.clipboard.writeText('xu456xu@gmail.com');
+      const btn = document.getElementById('copyMail');
+      const old = btn.textContent;
+      btn.textContent = '已复制';
+      setTimeout(()=> btn.te
